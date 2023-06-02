@@ -10,3 +10,4 @@ vite-project/node_modules
 *.njsproj
 *.sln
 *.sw?
+dist
