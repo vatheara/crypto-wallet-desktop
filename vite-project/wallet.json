@@ -1,0 +1,19 @@
+{
+    "provider": null,
+    "address": "0x7ebdE18D4b11ECFb3d65e0AdD53a140C9522B2e6",
+    "publicKey": "0x02b69e73898c4916562636dc42520a6c7e9ec0d3517840403a8907dac49c0a95b9",
+    "fingerprint": "0x70b2b096",
+    "parentFingerprint": "0xe4848ae3",
+    "mnemonic": {
+        "phrase": "shy fatal seek economy enact lottery letter humor flavor pair control hip",
+        "password": "",
+        "wordlist": {
+            "locale": "en"
+        },
+        "entropy": "0xc78a730c2314970820237858b3e0bdb5"
+    },
+    "chainCode": "0x2b67050cc8fbd1575e2ec470359c5914a2a5d3770d64487ae0d822c1ec211b61",
+    "path": "m/44'/60'/0'/0/0",
+    "index": 0,
+    "depth": 5
+}
