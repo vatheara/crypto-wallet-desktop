@@ -177,12 +177,14 @@ export const WalletProvider = ({ children }: any) => {
                 localStorage.setItem('wallet', JSON.stringify(currentwallet));
                 console.log('current wallet: ', currentwallet);
             } else {
-                console.log('changing wallet cancelled');
                 return false;
             }
         } else {
-            console.log('current wallet not found');
-            return false;
+            const currentwallet = await connectWalletWithSeed(seed,provider);
+            setCurrentWallet(currentwallet);
+            localStorage.setItem('wallet', JSON.stringify(currentwallet));
+            console.log('current wallet: ', currentwallet);
+            return true;
         }
         return true;
     }
