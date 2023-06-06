@@ -17,7 +17,8 @@ export interface WalletContextType {
     setSelectedToken: (token: TokenType) => void;
     sendTransaction:(data:SendTransactionProps) =>Promise<any>;
     getWalletBalance: () => Promise<void>;
-    fecthToken: (tokenAddress: string) => Promise<void>;
+    fetchToken: (tokenAddress: string) => Promise<void>;
+    allJsonRpcProviders: NetworkRpcProviderType[];
 }
 
 
@@ -44,4 +45,36 @@ export declare interface TokenLocalStorageType {
 export interface SendTransactionProps {
     to:string
     value:string
+}
+
+
+export interface NetworkProviderType {
+    name: string;
+    url: string;
+    chainId: number;
+    currencySymbol: string;
+    blockExplorerUrls?: string[];
+}
+
+export interface NetworkRpcProviderType  extends NetworkProviderType{
+    provider:JsonRpcProvider
+}
+
+export interface BaseModalProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+}
+
+export interface NewWalletModalProps extends BaseModalProps {
+    wallet: HDNodeWallet | undefined;
+}
+
+export interface WalletDetailModalProps extends BaseModalProps {
+    setSendTransactionModalOpen: (open: boolean) => void;
+    setImportTokenModalOpen: (open: boolean) => void;
+}
+
+
+export interface ConnectWalletModalProps extends BaseModalProps {
+    setWalletDetailModalOpen: (open: boolean) => void;
 }

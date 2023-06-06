@@ -2,16 +2,10 @@ import {JsonRpcProvider, formatEther,Wallet} from 'ethers'
 import type { TokenType, TransactionType } from '../types'
 import { EtherScanAPI } from './etherscanApi'
 
-const INFURA_ID = "4adb4c3bb7524922a13c5b01e3b9590a"
 const ETHERSCAN_API_KEY = "82NS9VUW6V1UHCF1VTBSUIFNARSB5NJG2P"
 
-export const provider = new JsonRpcProvider("https://mainnet.infura.io/v3/"+INFURA_ID)
 
-export const GoerliProvider = new JsonRpcProvider("https://goerli.infura.io/v3/"+INFURA_ID)
 
-export const SepoliaProvider = new JsonRpcProvider("https://sepolia.infura.io/v3/"+INFURA_ID)
-
-export const PolygonProvider = new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
 // https://ethereum-goerli.publicnode.com
 export const LocalProvider = new JsonRpcProvider("http://127.0.0.1:8545")
 

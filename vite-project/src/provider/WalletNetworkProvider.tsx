@@ -4,33 +4,38 @@ import { connectWalletWithSeed,
          connectWalletWithPrivateKey,
          createWallet,
          getBalance,
-         GoerliProvider,
-         SepoliaProvider,
-         LocalProvider,
-         PolygonProvider,
          getToken,
          sendTokenTransaction
     } from "../utils/account";
-import type {HDNodeWallet,JsonRpcProvider, Network, Wallet} from "ethers";
+import {HDNodeWallet,JsonRpcProvider, Network, Wallet} from "ethers";
 import type {TokenLocalStorageType,TokenType, SendTransactionProps} from "../types";
 import { formatUnits,parseUnits } from "ethers";
 import { WalletContext } from "../context/";
+import { useNetwork } from "../hooks/useNetwork";
+import {DEFAULT_NETWORKS} from "../utils/constant";
+
+const GOERLI = DEFAULT_NETWORKS[0].provider;
 
 export const WalletProvider = ({ children }: any) => {  
 
-    const [provider,setProvider] = useState<JsonRpcProvider>(GoerliProvider);
+    const {allJsonRpcProviders} = useNetwork();
+
+    console.log('useNetwork',allJsonRpcProviders);
+
+    const [provider,setProvider] = useState<JsonRpcProvider>(GOERLI);
     const [network,setNetwork] = useState<string>('goerli');
 
 
     useEffect(() => {
-        if(network === 'goerli') {
-            setProvider(GoerliProvider);
-        } else if(network === 'sepolia') {
-            setProvider(SepoliaProvider);
-        } else if(network === 'local') {
-            setProvider(PolygonProvider);
+        if(network){
+            allJsonRpcProviders.map((item) => {
+                if(item.name === network){
+                    setProvider(item.provider);
+                }
+            }
+            )
         }
-    },[network])
+    },[network,allJsonRpcProviders])
 
     const [currentWallet, setCurrentWallet] = useState<HDNodeWallet | null>(null)
     const [wallet, setWallet] = useState<Wallet | null>(null)
@@ -79,7 +84,7 @@ export const WalletProvider = ({ children }: any) => {
         }
     },[walletBalance])
 
-    const fecthToken = async (tokenAddress:string) => {
+    const fetchToken = async (tokenAddress:string) => {
         if(!provider) return;
         const token = await getToken(tokenAddress,provider);
         if(token){
@@ -207,7 +212,8 @@ export const WalletProvider = ({ children }: any) => {
             setSelectedToken,
             sendTransaction,
             getWalletBalance,
-            fecthToken
+            fetchToken,
+            allJsonRpcProviders
             }}>
         {children}
         </WalletContext.Provider>
