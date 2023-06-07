@@ -13,18 +13,32 @@ export class EtherScanAPI {
         this.provider = provider;
     }
 
-    async getTokenContract(tokenAddress: string, wallet?:Wallet) {
+    async getTokenContract(tokenAddress: string, abi:string, wallet?:Wallet ) {
+        if(!abi) {console.log("abi is undefined");return;}
        return this.provider.getNetwork().then( async (network) => {
             if(network.name === "goerli"){
-                    const abi = await axios.get(GOERLI_API_URL+'/api?module=contract&action=getabi&address='+tokenAddress+'&apikey='+this._apiKey).then((res) => res.data.result);
+                    // const abi = await axios.get(GOERLI_API_URL+'/api?module=contract&action=getabi&address='+tokenAddress+'&apikey='+this._apiKey).then((res) => res.data.result);
                     if(wallet) return new Contract(tokenAddress, abi , wallet);
                     return new Contract(tokenAddress, abi , this.provider);
                 } 
             if(network.name === "sepolia"){
-                    const abi = await axios.get(SEPOLIA_API_URL+'/api?module=contract&action=getabi&address='+tokenAddress+'&apikey='+this._apiKey).then((res) => res.data.result);
+                    // const abi = await axios.get(SEPOLIA_API_URL+'/api?module=contract&action=getabi&address='+tokenAddress+'&apikey='+this._apiKey).then((res) => res.data.result);
                     if(wallet) return new Contract(tokenAddress, abi , wallet);
                     return new Contract(tokenAddress, abi , this.provider);
                 } 
             });
     }
+
+    async getTokenAbi(tokenAddress: string) {
+         return this.provider.getNetwork().then( async (network) => {
+                if(network.name === "goerli"){
+                      const abi = await axios.get(GOERLI_API_URL+'/api?module=contract&action=getabi&address='+tokenAddress+'&apikey='+this._apiKey).then((res) => res.data.result);
+                      return abi;
+                 } 
+                if(network.name === "sepolia"){
+                      const abi = await axios.get(SEPOLIA_API_URL+'/api?module=contract&action=getabi&address='+tokenAddress+'&apikey='+this._apiKey).then((res) => res.data.result);
+                      return abi;
+                 } 
+                });
+     }
 }           

@@ -17,6 +17,7 @@ export const getBalance = async (address:string,provider:JsonRpcProvider) => {
     name: "ETH",
     symbol: "ETH",
     balance: formatEther(balance) ,
+    abi:''
   }  
 
  return data;
@@ -66,11 +67,11 @@ export const sendEthTransaction = async (wallet:Wallet,tx:TransactionType) => {
   
 }
 
-export const sendTokenTransaction = async (wallet:Wallet,provider:JsonRpcProvider,tokenAddress:string,tx?:TransactionType) => {
+export const sendTokenTransaction = async (wallet:Wallet,abi:string,provider:JsonRpcProvider,tokenAddress:string,tx?:TransactionType) => {
   
     // Sign and send the transaction
     const etherScanApi = new EtherScanAPI(provider);
-    const tokenContract = await etherScanApi.getTokenContract(tokenAddress,wallet);
+    const tokenContract = await etherScanApi.getTokenContract(tokenAddress,abi,wallet);
     // get fees data 
     // const fees = await tokenContract?.estimateGas({to:"0x96f63C079Bf658a3910DeDAc0FCd3C5fd6B3Fd47",from:"0x4134d3A7D78D132081d90eDC527e77aF68065c2F",value:20});
     // console.log(fees);
@@ -80,9 +81,14 @@ export const sendTokenTransaction = async (wallet:Wallet,provider:JsonRpcProvide
     
 }
 
-export const getToken = async (tokenAddress:string,provider:JsonRpcProvider) => {
+export const getToken = async (tokenAddress:string,provider:JsonRpcProvider,abi:string) => {
   const etherScan = new EtherScanAPI(provider);
-  return  etherScan.getTokenContract(tokenAddress);
+  return  etherScan.getTokenContract(tokenAddress,abi);
+}
+
+export const getTokenAbi = async (tokenAddress:string,provider:JsonRpcProvider) => {
+  const etherScan = new EtherScanAPI(provider);
+  return  etherScan.getTokenAbi(tokenAddress);
 }
 
 

@@ -5,7 +5,8 @@ import { connectWalletWithSeed,
          createWallet,
          getBalance,
          getToken,
-         sendTokenTransaction
+         sendTokenTransaction,
+         getTokenAbi
     } from "../utils/account";
 import {HDNodeWallet,JsonRpcProvider, Network, Wallet} from "ethers";
 import type {TokenLocalStorageType,TokenType, SendTransactionProps} from "../types";
@@ -67,7 +68,7 @@ export const WalletProvider = ({ children }: any) => {
                 to:data?.to,
                 value:parseUnits(data?.value,Number(selectedToken?.decimals))
             }
-            return  sendTokenTransaction(wallet,provider,selectedToken?.address,tx)
+            return  sendTokenTransaction(wallet,selectedToken?.abi,provider,selectedToken?.address,tx)
         }
     }
 
@@ -84,14 +85,14 @@ export const WalletProvider = ({ children }: any) => {
         }
     },[walletBalance])
 
-    const fetchToken = async (tokenAddress:string) => {
+    const fetchToken = async (tokenAddress:string,abi:string) => {
         if(!provider) return;
-        const token = await getToken(tokenAddress,provider);
+        const token = await getToken(tokenAddress,provider,abi);
         if(token){
             const name = await token?.name();
             const symbol = await token?.symbol();
             const balance = await token?.balanceOf(currentWallet?.address);
-            setSelectedToken({name,symbol,balance:formatUnits(balance,Number(selectedToken?.decimals)),address:tokenAddress,decimals:selectedToken?.decimals})
+            setSelectedToken({name,symbol,balance:formatUnits(balance,Number(selectedToken?.decimals)),abi:abi,address:tokenAddress,decimals:selectedToken?.decimals})
         }
     }
     
@@ -100,13 +101,14 @@ export const WalletProvider = ({ children }: any) => {
         if(!provider || !currentWallet?.address) return;
         provider.getNetwork().then((res:Network) => {
             const allTokens = JSON.parse(localStorage.getItem(res.name) || '[]');
+            console.log('allTokens',allTokens)
             allTokens.map(async (token:TokenLocalStorageType) => {
-                const tokenData = await getToken(token?.tokenAddress,provider);
+                const tokenData = await getToken(token?.tokenAddress,provider,token?.abi);
                 if(tokenData){
                     const name = await tokenData?.name();
                     const symbol = await tokenData?.symbol();
                     const balance = await tokenData?.balanceOf(currentWallet?.address);
-                    setTokens((prev)=>[...prev,{name,symbol,balance:formatUnits(balance,Number(token?.decimals)),address:token?.tokenAddress,decimals:token?.decimals}])
+                    setTokens((prev)=>[...prev,{name,symbol,balance:formatUnits(balance,Number(token?.decimals)),abi:token?.abi,address:token?.tokenAddress,decimals:token?.decimals}])
                 }
             });
         })
@@ -155,18 +157,19 @@ export const WalletProvider = ({ children }: any) => {
 
     const importToken = async (tokenAddress:string,decimals:string) => {
         if(currentWallet?.address && provider){
-            const token = await getToken(tokenAddress,provider);
+            const abi = await getTokenAbi(tokenAddress,provider);
+            const token = await getToken(tokenAddress,provider,abi);
             if(token){
                 if(!localStorage.getItem(network)){
-                    localStorage.setItem(network,JSON.stringify([{tokenAddress,decimals}]));
+                    localStorage.setItem(network,JSON.stringify([{tokenAddress,decimals,abi}]));
                 } else {
                     const tokenData = JSON.parse(localStorage.getItem(network) || '[]');
-                    localStorage.setItem(network,JSON.stringify([{tokenAddress,decimals},...tokenData]));
+                    localStorage.setItem(network,JSON.stringify([{tokenAddress,decimals,abi},...tokenData]));
                 }
                 const name = await token?.name();
                 const symbol = await token?.symbol();
                 const balance = await token?.balanceOf(currentWallet?.address);
-                setTokens([...tokens,{name,symbol,balance:formatUnits(balance,Number(decimals)),address:tokenAddress,decimals}])
+                setTokens([...tokens,{name,symbol,balance:formatUnits(balance,Number(decimals)),abi,address:tokenAddress,decimals}])
             }
             return token;
         }

@@ -17,7 +17,7 @@ export interface WalletContextType {
     setSelectedToken: (token: TokenType) => void;
     sendTransaction:(data:SendTransactionProps) =>Promise<any>;
     getWalletBalance: () => Promise<void>;
-    fetchToken: (tokenAddress: string) => Promise<void>;
+    fetchToken: (tokenAddress: string,abi:string) => Promise<void>;
     allJsonRpcProviders: NetworkRpcProviderType[];
 }
 
@@ -32,6 +32,7 @@ export declare interface TransactionType {
 export declare interface TokenType {
     name: string;
     symbol: string;
+    abi:string;
     balance: string;
     address?: string;
     decimals?: string;
@@ -40,6 +41,7 @@ export declare interface TokenType {
 export declare interface TokenLocalStorageType {
     tokenAddress: string;
     decimals: string; 
+    abi:string;
 }
 
 export interface SendTransactionProps {
