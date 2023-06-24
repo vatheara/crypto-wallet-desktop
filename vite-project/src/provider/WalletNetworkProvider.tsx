@@ -24,8 +24,7 @@ export const WalletProvider = ({ children }: any) => {
     console.log('useNetwork',allJsonRpcProviders);
 
     const [provider,setProvider] = useState<JsonRpcProvider>(GOERLI);
-    const [network,setNetwork] = useState<string>('goerli');
-
+    const [network,setNetwork] = useState<string>('Goerli');
 
     useEffect(() => {
         if(network){
@@ -45,8 +44,9 @@ export const WalletProvider = ({ children }: any) => {
     const [selectedToken,setSelectedToken] = useState<TokenType>();
 
 
-    const createNewWallet = async (prop:any) => {
-        const wallet = await createWallet({...prop});
+    const createNewWallet = async () => {
+        // no provider
+        const wallet = await createWallet();
         if(typeof wallet !== 'string') {
             setCurrentWallet(wallet);
         }
@@ -138,9 +138,11 @@ export const WalletProvider = ({ children }: any) => {
     useEffect(() => {
         async function connectWallet(){
             if(currentWallet?.mnemonic?.phrase && provider){
-            const privateKey = (await connectWalletWithSeed(currentWallet?.mnemonic?.phrase,provider)).privateKey;
-            const wallet = await connectWalletWithPrivateKey(privateKey,provider);
-            setWallet(wallet);
+            const privateKey = (await connectWalletWithSeed(currentWallet?.mnemonic?.phrase,provider))?.privateKey;
+            if(privateKey){
+                const wallet = await connectWalletWithPrivateKey(privateKey,provider);
+                setWallet(wallet);
+            }
             }
         }
 
@@ -156,15 +158,24 @@ export const WalletProvider = ({ children }: any) => {
     },[currentWallet,provider,network])
 
     const importToken = async (tokenAddress:string,decimals:string) => {
+        // if token already exist
+        if(localStorage.getItem(network)){
+            const tokenData = JSON.parse(localStorage.getItem(network.toLowerCase()) || '[]');
+            const tokenExist = tokenData.find((item:TokenLocalStorageType) => item?.tokenAddress === tokenAddress);
+            if(tokenExist){
+                alert('Token already exist');
+                return;
+            }
+        }
         if(currentWallet?.address && provider){
             const abi = await getTokenAbi(tokenAddress,provider);
             const token = await getToken(tokenAddress,provider,abi);
             if(token){
-                if(!localStorage.getItem(network)){
-                    localStorage.setItem(network,JSON.stringify([{tokenAddress,decimals,abi}]));
+                if(!localStorage.getItem(network.toLowerCase())){
+                    localStorage.setItem(network.toLowerCase(),JSON.stringify([{tokenAddress,decimals,abi}]));
                 } else {
-                    const tokenData = JSON.parse(localStorage.getItem(network) || '[]');
-                    localStorage.setItem(network,JSON.stringify([{tokenAddress,decimals,abi},...tokenData]));
+                    const tokenData = JSON.parse(localStorage.getItem(network.toLowerCase()) || '[]');
+                    localStorage.setItem(network.toLowerCase(),JSON.stringify([{tokenAddress,decimals,abi},...tokenData]));
                 }
                 const name = await token?.name();
                 const symbol = await token?.symbol();
@@ -180,10 +191,12 @@ export const WalletProvider = ({ children }: any) => {
         if(!provider) {alert('provider not found'); return false;}
         if(currentWallet){
             if(confirm('Are you sure you want to change wallet?')){
-                const currentwallet = await connectWalletWithSeed(seed,provider);
+                const currentwallet = await connectWalletWithSeed(seed,provider).catch((err) => {return null});
                 setCurrentWallet(currentwallet);
                 localStorage.setItem('wallet', JSON.stringify(currentwallet));
                 console.log('current wallet: ', currentwallet);
+                if(currentWallet) return true;
+                return false;
             } else {
                 return false;
             }
@@ -194,7 +207,6 @@ export const WalletProvider = ({ children }: any) => {
             console.log('current wallet: ', currentwallet);
             return true;
         }
-        return true;
     }
     
     return (

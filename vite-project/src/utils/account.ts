@@ -24,7 +24,11 @@ export const getBalance = async (address:string,provider:JsonRpcProvider) => {
 }
 
 export const connectWalletWithSeed = async (seed:string,provider:JsonRpcProvider) => {
-  return Wallet.fromPhrase(seed).connect(provider);
+  try{
+    return Wallet.fromPhrase(seed).connect(provider);
+  } catch{
+    return null;
+  }
 }
 
 export const connectWalletWithPrivateKey = async (privateKey:string,provider:JsonRpcProvider) => {
@@ -37,10 +41,7 @@ export const connectWalletWithKeystore = async (keystore:string,password:string,
   });
 }
 
-export const createWallet = async (password?:string,provider?:JsonRpcProvider) => {
-  if(password){
-    return Wallet.createRandom().encrypt(password);
-  }
+export const createWallet = async (provider?:JsonRpcProvider) => {
   if(provider){
     return Wallet.createRandom().connect(provider);
   }

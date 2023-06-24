@@ -1,4 +1,3 @@
-import './App.css'
 import { useState } from 'react';
 import type { HDNodeWallet } from 'ethers';
 import { useWallet } from './hooks/useWallet';

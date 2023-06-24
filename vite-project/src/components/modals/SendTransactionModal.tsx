@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import * as Modal from 'react-modal';
+import {IoCloseSharp} from 'react-icons/io5'
+import { SelectNetworkModalProps } from '../../types'
 import { useWallet } from '../../hooks/useWallet';
 import type {BaseModalProps} from '../../types'
 
@@ -34,6 +35,9 @@ const SendTransactionModal = (props:BaseModalProps) => {
     }
 
     const handleSend = async () => {
+      if(!selectedTokenSymbol){alert('Please select a token'); return}
+      if(!recipientAddress){alert('Please enter a recipient address'); return}
+      if(!amount){alert('Please enter an amount'); return}
       sendTransaction({to:recipientAddress,value:amount}).then((tx) => {
         console.log('Transaction sent:', tx.hash);
         setTransactionHash(tx.hash)
@@ -53,45 +57,33 @@ const SendTransactionModal = (props:BaseModalProps) => {
       });
     }
 
-    return <Modal
-      isOpen={props.open}
-      ariaHideApp={false}
+    return <div
+    className={`${props.open? "flex flex-col items-center justify-center z-10 h-full w-full bg-[#00000048] absolute top-0 left-0":"hidden"}`}
     >
-      <div className='p-4 text-black bg-white rounded-md w-full relative'>
-        <div onClick={()=>props.setOpen(false)} className="p-1 border cursor-pointer rounded-md absolute top-0 right-1">close</div>
-        <div className='text-lg font-bold'>Send Transaction</div>
-        <div className='flex flex-col space-y-3'>
-          <div>
+      <div className='flex flex-col items-center z-10 w-full h-full max-h-[94vh] shadow-lg rounded-[10px] bg-[#24272a] p-3'>
+          <div className='flex justify-center items-center p-[16px] relative w-full'>
+              <h2 className='font-bold'>Send Transaction</h2>
+              <div onClick={props.onClose} className='absolute right-[16px] cursor-pointer'><IoCloseSharp size={22} color='#fff'/></div>
+          </div>
+          <div className='flex flex-col space-y-3 w-full overflow-auto p-4'>
             <div className='text-left'>Select Token</div>
-            <select onChange={onChangeToken} value={selectedTokenSymbol} className='border w-full bg-white rounded-md p-1' >
-              <option value='ETH'>ETH</option>
-              {tokens?.map((token, index) => {
+            <select onChange={onChangeToken} value={selectedTokenSymbol} className='w-full p-[10px] rounded-[10px] border border-[#24272a]' >
+                <option value='ETH'>ETH</option>
+                {tokens?.map((token, index) => {
                 return <option key={index} value={token.symbol} >{token.symbol}</option>
-              })}
+                })}
             </select>
-          </div>
-          <div>
             <div className='text-left'>Recipient Address</div>
-              <input className='border w-full bg-white rounded-md p-1' value={recipientAddress} onChange={(e)=>setRecipientAddress(e.target.value)} />
+            <input className='w-full p-[10px] rounded-[10px] border border-[#24272a]' value={recipientAddress} onChange={(e)=>setRecipientAddress(e.target.value)} />
+              <div className='text-left'>Amount</div>
+                <div className='text-start text-gray text-xs'>{selectedToken?.balance} Available</div>
+                <div className='flex items-center'>
+                  <input type='number' className='w-full p-[10px] rounded-[10px] border border-[#24272a]'  value={amount} onChange={(e)=>setAmount(e.target.value)} />
+                  <div onClick={handleMax} className='text-blue-600 cursor-pointer ml-3'>MAX</div>
+                </div>
           </div>
-          <div>
-            <div className='text-left'>Amount</div>
-            <div className='flex items-center'>
-              <input type='number' className='border bg-white rounded-md p-1' value={amount} onChange={(e)=>setAmount(e.target.value)} />
-              <div onClick={handleMax} className='text-blue-600 cursor-pointer ml-3'>MAX</div>
-            </div>
-            <div className='text-gray text-xs'>{selectedToken?.balance} Available</div>
-          </div>
-          {/* <div>
-            <div className='text-left'>Gas Price(GWEI)</div>
-            <input type='number' className='border bg-white rounded-md p-1' value={gasPrice} onChange={(e)=>setGasPrice(e.target.value)} />
-          </div>
-          <div>
-            <div className='text-left'>Gas Limit</div>
-            <input type='number' className='border bg-white rounded-md p-1' value={gasLimit} onChange={(e)=>setGasLimit(e.target.value)} />
-          </div> */}
-          <div>
-            <button onClick={handleSend} className='text-white'>Send</button>
+          <div className='flex space-x-4 w-[60%] justify-center items-center p-[16px] self-start'>
+              <button onClick={handleSend} className='w-full text-blue-500 border border-blue-500 rounded-full bg-[#24272a]'>Send</button>
           </div>
           <div className='text-left'>
             {transactionHash && <div>
@@ -103,9 +95,8 @@ const SendTransactionModal = (props:BaseModalProps) => {
               <div className='text-blue-600'>{transactionStatus}</div>
             </div>}
             </div>
-        </div>
-        </div>
-    </Modal>
+      </div>
+    </div>
   }
 
 

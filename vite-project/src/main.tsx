@@ -1,13 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom/client'
 import './index.css'
 import { WalletProvider } from './provider/WalletNetworkProvider.tsx'
-
+import './App.css'
+import Routes from './Routes.tsx'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <WalletProvider>
-    <App />
+      <Routes />
     </WalletProvider>
   </React.StrictMode>,
 )

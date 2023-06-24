@@ -55,7 +55,7 @@ export interface NetworkProviderType {
     url: string;
     chainId: number;
     currencySymbol: string;
-    blockExplorerUrls?: string[];
+    blockExplorerUrls?: string;
 }
 
 export interface NetworkRpcProviderType  extends NetworkProviderType{
@@ -64,7 +64,8 @@ export interface NetworkRpcProviderType  extends NetworkProviderType{
 
 export interface BaseModalProps {
     open: boolean;
-    setOpen: (open: boolean) => void;
+    setOpen?: (open: boolean) => void;
+    onClose: () => void;
 }
 
 export interface NewWalletModalProps extends BaseModalProps {
@@ -79,4 +80,8 @@ export interface WalletDetailModalProps extends BaseModalProps {
 
 export interface ConnectWalletModalProps extends BaseModalProps {
     setWalletDetailModalOpen: (open: boolean) => void;
+}
+
+export interface SelectNetworkModalProps extends BaseModalProps {
+    addNetwork: () => void;
 }

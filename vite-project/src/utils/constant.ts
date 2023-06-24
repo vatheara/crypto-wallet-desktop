@@ -7,6 +7,8 @@ const GoerliProvider = new JsonRpcProvider("https://goerli.infura.io/v3/"+INFURA
 const SepoliaProvider = new JsonRpcProvider("https://sepolia.infura.io/v3/"+INFURA_ID)
 const PolygonProvider = new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
 
+export const SECRET_SALT = "secretSalt"
+
 export const DEFAULT_NETWORKS: NetworkRpcProviderType[] = [
     {
         name: 'Goerli',
