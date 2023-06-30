@@ -11,3 +11,4 @@ vite-project/node_modules
 *.sln
 *.sw?
 dist
+.env

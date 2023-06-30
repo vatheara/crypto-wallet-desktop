@@ -1,7 +1,7 @@
 import { JsonRpcProvider, Contract, Wallet } from "ethers";
 import axios from "axios";
 
-const POLYGONSCAN_API_KEY = "YG31K7V4JW48T4P1SY52QK6HNUNJ8R8PXX"
+const POLYGONSCAN_API_KEY = import.meta.env.POLYGONSCAN_API_KEY
 
 const POLYGONSCAN_API_URL = "https://api.polygonscan.com"
 const MUMBAI_API_URL = "https://api-testnet.polygonscan.com"

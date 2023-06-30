@@ -1,7 +1,7 @@
 import { JsonRpcProvider, Contract, Wallet } from "ethers";
 import axios from "axios";
 
-const ETHERSCAN_API_KEY = "82NS9VUW6V1UHCF1VTBSUIFNARSB5NJG2P"
+const ETHERSCAN_API_KEY = import.meta.env.ETHERSCAN_API_KEY
 const GOERLI_API_URL = "https://api-goerli.etherscan.io"
 const SEPOLIA_API_URL = "https://api-sepolia.etherscan.io"
 
