@@ -86,7 +86,7 @@ This project is licensed under the MIT License. See the [LICENSE](https://github
 
 ## Acknowledgements
 
-Eth-Wallet Desktop was made possible thanks to the following open-source projects:
+Crypto-Wallet Desktop was made possible thanks to the following open-source projects:
 
 - Electron.js - https://www.electronjs.org/
 - Vite.js - https://vitejs.dev/
