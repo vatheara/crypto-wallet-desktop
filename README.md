@@ -92,7 +92,7 @@ Eth-Wallet Desktop was made possible thanks to the following open-source project
 - Vite.js - https://vitejs.dev/
 - React.js - https://reactjs.org/
 - TypeScript - https://www.typescriptlang.org/
-- Ethers.js - https://docs.ethers.org/v5/
+- Ethers.js - https://docs.ethers.org/v6/
 
 Special thanks to the Ethereum community for their continuous support and inspiration.
 
