@@ -92,7 +92,16 @@ export const getTokenAbi = async (tokenAddress:string,provider:JsonRpcProvider) 
   return  etherScan.getTokenAbi(tokenAddress);
 }
 
+export const getERC20Transactions = async (tokenAdress:string,address:string,provider:JsonRpcProvider) => {
+  const etherScan = new EtherScanAPI(provider);
+  return etherScan.getERC20Transactions(tokenAdress,address);
+}
 
+export const getNormalTransactions = async (address:string,provider:JsonRpcProvider) => {
+  const etherScan = new EtherScanAPI(provider);
+  return etherScan.getNormalTransactions(address);
+
+}
 
 const main = async () => {
   // const balance = await getBalance(address)

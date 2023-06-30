@@ -41,4 +41,31 @@ export class EtherScanAPI {
                  } 
                 });
      }
+
+     async getERC20Transactions(tokenAddress:string,address: string) {
+        return this.provider.getNetwork().then( async (network) => {
+            if(network.name === "goerli"){
+                    const transactions = await axios.get(GOERLI_API_URL+'/api?module=account&action=tokentx&address='+address+'&contractaddress='+tokenAddress+'&page=1&offset=10000&sort=asc&apikey='+this._apiKey).then((res) => res.data.result);
+                    return transactions;
+                } 
+            if(network.name === "sepolia"){
+                    const transactions = await axios.get(SEPOLIA_API_URL+'/api?module=account&action=tokentx&address='+address+'&contractaddress='+tokenAddress+'&page=1&offset=10000&sort=asc&apikey='+this._apiKey).then((res) => res.data.result);
+                    return transactions;
+                } 
+        })
+     }
+
+     async getNormalTransactions(address: string) {
+        return this.provider.getNetwork().then( async (network) => {
+            if(network.name === "goerli"){
+                    const transactions = await axios.get(GOERLI_API_URL+'/api?module=account&action=txlist&address='+address+'&page=1&offset=10000&sort=asc&apikey='+this._apiKey).then((res) => res.data.result);
+                    return transactions;
+                } 
+            if(network.name === "sepolia"){
+                    const transactions = await axios.get(SEPOLIA_API_URL+'/api?module=account&action=txlist&address='+address+'&page=1&offset=10000&sort=asc&apikey='+this._apiKey).then((res) => res.data.result);
+                    return transactions;
+                } 
+        })
+     }
+
 }           

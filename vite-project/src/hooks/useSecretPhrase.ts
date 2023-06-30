@@ -1,5 +1,4 @@
-import { useEffect,useState,useRef} from "react";
-import { useWallet } from "./useWallet";
+import { useEffect,useState} from "react";
 
 export const useSecretPhrase = () => {
 

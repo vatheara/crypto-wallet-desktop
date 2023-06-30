@@ -13,7 +13,11 @@ import ImportTokenModal from '../components/modals/ImportTokenModal'
 import SettingModal from '../components/modals/SettingModal'
 import { useWallet } from '../hooks/useWallet'
 import { useAuth } from '../hooks/useAuth'
+import useTransacctionHistory from '../hooks/useTransactionHistory'
 import SendTransactionModal from '../components/modals/SendTransactionModal'
+
+import { formatUnits } from 'ethers'
+
 const HomePage = () => {
 
     const [tabIndex,setTabIndex] = useState(0)
@@ -31,6 +35,9 @@ const HomePage = () => {
     const logout = () => {
         setAuth(false)
     }
+
+    const {history} = useTransacctionHistory()
+
 
     const copyClipboard = (text:string|undefined) => {
         if(!text)return;
@@ -54,7 +61,7 @@ const HomePage = () => {
             </div>
         </div>
         <div className="flex flex-col justify-center w-full px-[16px]">
-            <div className="grid items-center grid-cols-[1fr_2fr_1fr] bg-[#24272a] shadow-lg mt-[24px] mx-auto px-[16px] md:px-[32px] py-[12px] w-[85vw] z-[1]">
+            <div className="grid items-center grid-cols-[1fr_2fr_1fr] bg-[#24272a] shadow-lg mt-[24px] mx-auto px-[16px] md:px-[32px] py-[12px] w-[85vw] z-[2]">
                 <div onClick={()=>setIsSelectNetworkModalOpen(true)} className='flex justify-center items-center rounded-full text-[12px] w-max h-[32px] px-3 bg-[#141618] space-x-[8px] cursor-pointer'>
                     <div>{network[0]}</div>
                     <span>{network}</span>
@@ -67,7 +74,7 @@ const HomePage = () => {
                 <div className='flex justify-end relative'>
                     <BsThreeDotsVertical onClick={()=>setMenuPopup(!menuPopup)}  className='hover:text-[#3b4046] cursor-pointer'/>
                     {menuPopup&&
-                    <div className='flex flex-col items-start absolute top-[100%] left-[50%] translate-x-[-50%] translate-y-[10%] bg-[#24272a] rounded-md shadow-md w-[225px]'>
+                    <div className='flex flex-col items-start absolute top-[100%] left-[50%] translate-x-[-50%] translate-y-[10%] bg-[#24272a] rounded-md shadow-md w-[225px] z-10'>
                         <div onClick={()=>setIsSettingModalOpen(true)} className='flex items-center justify-start w-full px-[16px] py-[14px] hover:bg-[#3b4046] cursor-pointer'>
                             <IoMdSettings/>
                            <div className='ml-[8px]'>Settings</div> 
@@ -121,7 +128,7 @@ const HomePage = () => {
                 <div className='flex flex-col justify-center w-[85vw] mb-[10vh] pt-4 shadow-sm bg-[#24272a]'>
                     <div className='flex w-full px-4'>
                         <div onClick={() => setTabIndex(0)} className={`w-full cursor-pointer pb-2 ${tabIndex === 0 && 'border-b-2'}`}>Tokens</div>
-                        <div onClick={() => setTabIndex(1)} className={`w-full cursor-pointer pb-2 ${tabIndex === 1 && 'border-b-2'}`}>NFTs</div>
+                        {/* <div onClick={() => setTabIndex(1)} className={`w-full cursor-pointer pb-2 ${tabIndex === 1 && 'border-b-2'}`}>NFTs</div> */}
                         <div onClick={() => setTabIndex(2)} className={`w-full cursor-pointer pb-2 ${tabIndex === 2 && 'border-b-2'}`}>Activity</div>
                     </div>
                    { tabIndex === 0 &&<div className='flex flex-col w-full pt-2'>
@@ -175,8 +182,20 @@ const HomePage = () => {
                         </div>
                     </div> }
                     { tabIndex === 2 &&<div className='flex flex-col w-full pt-2'>
-                        <div className='flex justify-center w-full p-[16px] hover:bg-[#3b4046] cursor-pointer'>
-                            <div className='text-[#848c96]'>You have no transactions</div>
+                        <div className='flex flex-col justify-center w-full p-[16px]'>
+                        {
+                            history?.length > 0?
+                             history.map((item:any,index:any)=> <div key={index} className='flex items-start flex-col w-full p-[16px] hover:bg-[#3b4046] cursor-pointer'>
+                                <div className='flex justify-between w-full'>
+                                    <div>{item.to.toLowerCase() === (currentWallet?.address.toLowerCase()) ? "Receive":"SEND"}</div>
+                                    <div>{formatUnits(item.value,18)} {item.tokenSymbol?item.tokenSymbol:"ETH"}</div>
+                                </div>
+                                <div className='text-[12px]'>
+                                    <div>{item.to.toLowerCase() === (currentWallet?.address.toLowerCase()) ? "From: " + item.from.toLowerCase():"To: " + item.to.toLowerCase()}</div>
+                                </div>
+                             </div>)
+                            :<div className='text-[#848c96]'>You have no transactions</div>
+                        }
                         </div>
                         <div className='pb-[20px] pt-[10px]'>
                             <div>Need help? Contact <span className='text-blue-500'>Panacea support</span></div>
@@ -185,7 +204,7 @@ const HomePage = () => {
                 </div>
             </div>
         </div>
-
+        {menuPopup&&<div onClick={()=>setMenuPopup(false)} className='fixed h-screen w-screen z-[1]'></div>}
         <SelectNetworkModal open={isSelectNetworkModalOpen} onClose={() => setIsSelectNetworkModalOpen(false)} addNetwork={()=>setIsAddNetworkModalOpen(true)}/>
         <AddNetworkModal open={isAddNetworkModalOpen} onClose={() => setIsAddNetworkModalOpen(false)} />
         <ImportTokenModal open={isImportTokenModalOpen} onClose={() => setIsImportTokenModalOpen(false)} />

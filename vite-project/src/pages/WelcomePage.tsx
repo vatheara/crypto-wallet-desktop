@@ -7,6 +7,7 @@ import { Navigation, Pagination, Swiper as SwiperType } from 'swiper';
 import {AiFillCaretRight, AiFillCaretLeft} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { useWallet } from "../hooks/useWallet" 
 
 
 const WelcomePage = () => {
@@ -16,12 +17,17 @@ const WelcomePage = () => {
     const [isAgree,setIsAgree] = useState(false)
     const navigate = useNavigate()
 
+    const {currentWallet} = useWallet()
+
     useEffect(()=>{
         const isConfirmedSRP = localStorage.getItem('isConfirmedSRP')
         if(isConfirmedSRP === "false"){
             navigate("/secure-wallet")
         }
-    },[navigate])
+        if(currentWallet){
+            navigate("/home")
+        }
+    },[navigate,currentWallet])
 
     return (
         <div className="h-screen w-screen">
