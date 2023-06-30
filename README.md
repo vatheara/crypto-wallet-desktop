@@ -6,6 +6,8 @@
 
 This project is specifically designed for educational purposes and aims to provide an accessible and beginner-friendly codebase. Whether you're a novice developer looking to learn more about building decentralized applications or an experienced developer interested in exploring Ethereum wallets, Crypto-Wallet Desktop is an excellent starting point.
 
+The UI design of Crypto-Wallet Desktop draws inspiration from popular Ethereum wallets like MetaMask, providing users with a familiar and intuitive interface. However, please note that Crypto-Wallet Desktop is not affiliated with or endorsed by MetaMask.
+
 ## Features
 
 - :white_check_mark: **Send Ethereum Transactions**: Send Ether (ETH) from your wallet to other Ethereum addresses.
