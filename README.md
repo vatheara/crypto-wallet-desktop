@@ -1,8 +1,10 @@
-# Eth-Wallet Desktop
+# Crypto-Wallet Desktop
 
-![Eth-Wallet Desktop](screenshot/screenshot5.png)
+![Crypto-Wallet Desktop](screenshot/screenshot5.png)
 
-> Eth-Wallet Desktop is a decentralized Ethereum wallet built with Electron.js, Vite.js, React.js, TypeScript, and Web3.js. It provides a user-friendly interface for managing Ethereum and ERC20 tokens, allowing users to send transactions securely and conveniently.
+> Crypto-Wallet Desktop is a decentralized Ethereum wallet built with Electron.js, Vite.js, React.js, TypeScript, and Ethers.js. It provides a user-friendly interface for managing Ethereum and ERC20 tokens, allowing users to send transactions securely and conveniently.
+
+This project is specifically designed for educational purposes and aims to provide an accessible and beginner-friendly codebase. Whether you're a novice developer looking to learn more about building decentralized applications or an experienced developer interested in exploring Ethereum wallets, Crypto-Wallet Desktop is an excellent starting point.
 
 ## Features
 
@@ -36,7 +38,19 @@
    npm install
    ```
 
-4. Start the application:
+4. Start the electron:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Navigate to the react project directory:
+
+   ```bash
+   cd vite-project
+   ```
+
+6. Start the react:
 
    ```bash
    npm run dev
