@@ -12,11 +12,11 @@ The UI design of Crypto-Wallet Desktop draws inspiration from popular Ethereum w
 
 - :white_check_mark: **Send Ethereum Transactions**: Send Ether (ETH) from your wallet to other Ethereum addresses.
 - :white_check_mark: **ERC20 Token Support**: Send transactions with ERC20 tokens, including popular tokens like DAI, USDT, and more.
-- :white_check_mark: **Secure Key Management**: Store your private keys securely on your device, ensuring full control of your funds.
 - :white_check_mark: **Transaction History**: View a detailed history of your past transactions, including their status and transaction details.
 - :white_check_mark: **Balance Overview**: Keep track of your Ethereum and ERC20 token balances in a single dashboard.
 - :white_check_mark: **Network Switching**: Connect to different Ethereum networks, such as Mainnet, Testnet, or a custom network of your choice.
 - :white_check_mark: **QR Code Support**: Easily scan QR codes for wallet addresses and transaction details.
+- :construction: **Secure Key Management**: Store your private keys securely on your device, ensuring full control of your funds.
 - :construction: **Custom Gas Fees**: Set your preferred gas price and gas limit for transactions according to your needs.
 - :construction: **Multi-Language Support**: Choose from a range of languages to personalize your wallet interface.
 
