@@ -96,8 +96,3 @@ Crypto-Wallet Desktop was made possible thanks to the following open-source proj
 
 Special thanks to the Ethereum community for their continuous support and inspiration.
 
-## Contact
-
-For any inquiries or feedback, please contact [theara2048@gmail.com](mailto:theara2048@gmail.com).
-
-Follow us on Twitter [@VaTheara](https://twitter.com/VaTheara) for updates and announcements.
