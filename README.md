@@ -70,7 +70,7 @@ The UI design of Crypto-Wallet Desktop draws inspiration from popular Ethereum w
 
 Contributions are welcome! If you have any ideas, bug reports, or feature requests, please open an issue or submit a pull request. Make sure to follow the code of conduct.
 
-To contribute to Eth-Wallet Desktop, follow these steps:
+To contribute to Crypto-Wallet Desktop, follow these steps:
 
 1. Fork the repository.
 2. Create a new branch: `git checkout -b my-feature-branch`.
